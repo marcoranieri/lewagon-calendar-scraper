@@ -1,0 +1,11 @@
+<%= link_to "Batch##{@batch.number} - #{@batch.city}", batch_path(@batch) %>
+
+<ul>
+<% @days.each do |day| %>
+<hr>
+  <li>
+    <p><%= day.date %> - <%= day.lecture %></p>
+    <p><%= day.colleagues %></p>
+  </li>
+<% end %>
+</ul>

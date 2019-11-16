@@ -1,0 +1,5 @@
+<%= link_to "< Back to Batch##{@batch.number}", batch_path(@batch) %>
+<h1><%= @day.lecture %></h1>
+<h4><%= @day.date %></h4>
+
+<%= @day.html_row.html_safe %>
