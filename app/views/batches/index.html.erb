@@ -1,0 +1,7 @@
+<h1>Batches:</h1>
+
+<% @batches.each do |batch| %>
+  <p>
+    <%= link_to "Batch##{batch.number} - #{batch.city}", batch_path(batch) %>
+  </p>
+<% end %>

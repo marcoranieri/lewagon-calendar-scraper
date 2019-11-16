@@ -1,0 +1,13 @@
+<%= link_to "< Back", root_path %>
+<h1>
+  <%= "Batch##{@batch.number} - #{@batch.city}" %>
+</h1>
+
+<ul>
+  <% @days.each do |day| %>
+    <li>
+      <%= day.date %> -
+      <%= link_to day.lecture , batch_day_path(day.batch) %>
+    </li>
+  <% end %>
+</ul>
