@@ -97,7 +97,7 @@ full_info_arrays = [
 
 puts ""
 puts "Create User:\ntest@test.com | 123456"
-User.create email: "test@test.com", password: "123456"
+User.create username: "Marco", email: "test@test.com", password: "123456"
 
 puts ""
 puts "Creating Batch"
@@ -108,11 +108,11 @@ puts ""
 puts "Creating Days"
 full_info_arrays.each do |day_array|
   Day.create(
-    date: day_array[0],
-    lecture: day_array[1],
+    date:       day_array[0],
+    lecture:    day_array[1],
     colleagues: day_array[2...-1],
-    html_row: day_array[-1],
-    info: day_array,
+    html_row:   day_array[-1],
+    info:       day_array,
     batch: kingsland
   )
 end

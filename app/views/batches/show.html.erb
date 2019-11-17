@@ -1,13 +1,27 @@
-<%= link_to "< Back", root_path %>
+<%= link_to "HOME", root_path, class: "btn btn-outline-danger" %>
 <h1>
   <%= "Batch##{@batch.number} - #{@batch.city}" %>
 </h1>
 
+<hr>
+<div style="width:300px" class="d-flex">
+  <%= link_to "All Days", [@batch], class: "mr-auto p-2 btn btn-outline-warning" %>
+
+  <%= link_to "Teacher", teacher_path, class: "btn btn-outline-success" %>
+
+  <%= link_to "Assistant", assistant_path, class: "btn btn-outline-primary" %>
+</div>
+<hr>
+
 <ul>
-  <% @days.each do |day| %>
+  <% days.each do |day| %>
     <li>
       <%= day.date %> -
-      <%= link_to day.lecture , batch_day_path(day.batch) %>
+      <%= link_to day.lecture , batch_day_path(day.batch,day) %>
+      <p>
+        <%= day.html_row.html_safe %>
+      </p>
     </li>
+    <hr>
   <% end %>
 </ul>
