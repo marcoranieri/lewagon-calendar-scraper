@@ -1,7 +1,11 @@
 <h1>Batches:</h1>
 
+
+
+<ul>
 <% @batches.each do |batch| %>
-  <p>
-    <%= link_to "Batch##{batch.number} - #{batch.city}", batch_path(batch) %>
-  </p>
+  <li>
+    <%= link_to "Batch##{batch.number} - #{batch.city}", batch_path(batch) %> - Tot days: <%= batch.days.count %>
+  </li>
 <% end %>
+</ul>

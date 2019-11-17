@@ -1,6 +1,5 @@
 class CalendarScraper
   require 'open-uri'
-  require 'nokogiri'
   require 'mechanize'
 
   require 'pry'
@@ -9,31 +8,18 @@ class CalendarScraper
     @agent = Mechanize.new
     @name, @bootcamp = name, bootcamp
 
-    username, password = credentials(credential_txt)
+    @agent.get(build_calendar_url)
 
-    url = "https://kitt.lewagon.com/camps/#{@bootcamp}/calendar"
+    kitt_calendar_page = @agent.get(submit_login_form(credentials(credential_txt)))
 
-    @page = @agent.get(url)
-    after_page = @agent.page.link_with(text: "\n      as a teacher\n").click
-    after_page.form.login = username
-    after_page.form.password = password
-
-    auth_page = @agent.submit(after_page.form)
-    new_page = auth_page.link_with(text: 'click here').click
-
-    href = "/camps/#{@bootcamp}/calendar"
-    calendar_page = new_page.link_with(href: href).click
-
-    full_calendar_page = @agent.get(calendar_page)
-
-    @days = full_calendar_page.search(".calendar-day").first(10).map do |e|
+    @days = kitt_calendar_page.search(".calendar-day").first(10).map do |e|
       e.text.split("\n")
       .reject{|e| e.strip.empty? || ["Quiz", "Reboot"].include?(e.strip) }
-      .map(&:strip).push(e.to_s)
+      .map(&:strip)
+      .push(e.to_s)
     end
 
-    binding.pry
-    # @html_doc = Nokogiri::HTML(open(url).read)
+# binding.pry
 
   end # // Initialize
 
@@ -43,19 +29,36 @@ class CalendarScraper
       puts element.text.strip
       # puts element.attribute('href').value
     end
-
-
   end
 
 
-
-  private
+private
 
   def credentials(credential_txt)
     File.open(File.join(Dir.pwd,credential_txt)).map(&:strip)
   end
 
+  def set_credential(credentials)
+    form_page = @agent.page.link_with(text: "\n      as a teacher\n").click
+    form_page.form.login    = credentials[0]
+    form_page.form.password = credentials[1]
+    form_page
+  end
+
+  def submit_login_form(credentials)
+    github_auth_page = @agent.submit(set_credential(credentials).form)
+    calendar_page = github_auth_page.link_with(text: 'click here').click
+    calendar_page.link_with(href: build_href).click
+  end
+
+  def build_calendar_url
+    "https://kitt.lewagon.com/camps/#{@bootcamp}/calendar"
+  end
+
+  def build_href
+    "/camps/#{@bootcamp}/calendar"
+  end
+
 end
 
-CalendarScraper.new(319).search
-# "as a teacher"
+p CalendarScraper.new(319)

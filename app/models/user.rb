@@ -4,6 +4,11 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  has_many :batches
+  has_many :batches, dependent: :destroy
   has_many :days, through: :batches
+
+  def username=(input)
+    write_attribute(:username, input.to_s.capitalize)
+  end
+
 end
